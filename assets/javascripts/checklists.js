@@ -192,6 +192,43 @@ Redmine.Checklist = $.klass({
         this.addChecklistItem(event)
     }, this))
   },
+  
+  onClickAddAsListInNewChecklistItem: function() {
+    this.root.on('click', '.save-new-from-list-by-button', $.proxy(function(event){
+        //span = this.findSpan(event)
+        $('#dialog-get-checklist-items').remove();
+        $('body').append('<div id="dialog-get-checklist-items" style="display:none"><textarea class="text_cf" rows="5" width="100%"></textarea></div>');
+        $('#dialog-get-checklist-items').dialog({
+            modal: true,
+            title: 'Please insert your checklist',
+            buttons: {
+                "Ok": function () {
+                    var t = $.trim($(this).find('textarea').val()).split("\n");
+                    t = t.concat([
+                        "Code Review Completed", 
+                        "Merged", 
+                        "Tested", 
+                        "Deployed on Live",
+                        "Tested on Live"
+                    ]);
+                    $.each(t, function () {
+                        var it = $.trim(this);
+                        if (it !== "") {
+                            var cfi = $("#checklist_form_items");
+                            cfi.find(".checklist-item,.new").find("input.edit-box").val(it);
+                            cfi.find(".save-new-by-button:visible").click();
+                        }
+                    });
+                    $(this).dialog("close");
+                },
+                "Cancel": function () {
+                    $(this).dialog("close");
+                }
+            }
+        }).dialog("open");
+        //
+    }, this))
+  },
 
   onIssueFormSubmitRemoveEmptyChecklistItems: function() {
     $('body').on('submit', '#issue-form', function(){
@@ -336,6 +373,7 @@ Redmine.Checklist = $.klass({
     this.content = element.data('checklist-fields')
     this.onEnterInNewChecklistItemForm()
     this.onClickPlusInNewChecklistItem()
+    this.onClickAddAsListInNewChecklistItem()
     this.onIssueFormSubmitRemoveEmptyChecklistItems()
     this.onChecklistRemove()
     this.makeChecklistsSortable()

@@ -56,6 +56,15 @@ span.checklist-edit-reset-button {
     color: #2996CC;
 }
 
+span.save-new-from-list-by-button {
+    cursor: pointer;
+    color: #2996CC;
+}
+
+span.save-new-by-button {
+    cursor: pointer;
+}
+
 span.checklist-subject {cursor: pointer;}
 
 span.checklist-item.show .checklist-edit,
@@ -70,4 +79,4 @@ span.checklist-item.new .checklist-show-only,
 span.checklist-item.edit .checklist-show-only {
   display: none;
 }
-}
+
